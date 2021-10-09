@@ -9,11 +9,13 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import main.controllers.AppController;
+import main.services.DbConnection;
  
 public class App extends Application {
 	
-	private String activeTab = "editbudget";
-	private String userId, fullName;
+	public static  DbConnection dbConn;
+	private String activeTab = "login";
+	private String userId, userName, userFullName;
 	private AppController appController = new AppController();
 	/*
 	 * List of active tabs:
@@ -29,7 +31,13 @@ public class App extends Application {
 	 * 10.reports-
 	 */
 	
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
+    	if(args.length == 6) {
+    		dbConn = new DbConnection(args[1], args[3], args[5]);
+    	}
+    	else {
+    		throw new IllegalArgumentException("Arguments missing...");
+    	}
         launch(args);
     }
     
@@ -53,5 +61,35 @@ public class App extends Application {
 	public void setActiveTab(String activeTab) {
 		this.activeTab = activeTab;
 		this.appController.initialize(this);
+	}
+	
+	public void logout() {
+		this.setUserId(null);
+		this.setUserFullName(null);
+		this.setActiveTab("login");
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getUserFullName() {
+		return userFullName;
+	}
+
+	public void setUserFullName(String userFullName) {
+		this.userFullName = userFullName;
 	}
 }

@@ -23,8 +23,8 @@ public class NavItemController {
 		this.app = app;
 		
 		// checking for active tab
-		String activeTab = this.app.getActiveTab().toLowerCase().trim();
-		String tempText = this.text.toLowerCase().trim();
+		String activeTab = this.app.getActiveTab().toLowerCase().replaceAll(" ","");;
+		String tempText = this.text.toLowerCase().replaceAll(" ","");;
 		if(activeTab.equals(tempText)) {
 			this.isActive = true;
 		}
@@ -42,9 +42,9 @@ public class NavItemController {
 	}
 	
 	public void navItemClicked() {
-		String tempText = this.text.toLowerCase().trim();
+		String tempText = this.text.toLowerCase().replaceAll(" ","");;
 		if(tempText.equals("logout")) {
-			this.app.setActiveTab("login");
+			this.app.logout();
 		}
 		else if(tempText.equals("exit")) {
 			Platform.exit();
