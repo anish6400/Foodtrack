@@ -9,12 +9,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import main.models.App;
 
-public class LoginPageController {
+public class SignupPageController {
 	
+	@FXML private TextField fullNameField;
 	@FXML private TextField usernameField;
 	@FXML private PasswordField passwordField;
 	@FXML private Text errorMessage;
-	@FXML private Button loginButton;
+	@FXML private Button signupButton;
 	
 	private App app;
 	
@@ -25,7 +26,7 @@ public class LoginPageController {
 	}
 	
 	public void buttonClicked() {
-		Map<Object, Object> response = this.app.dbConn.login(this.usernameField.getText(), this.passwordField.getText());
+		Map<Object, Object> response = this.app.dbConn.signup(this.fullNameField.getText(), this.usernameField.getText(), this.passwordField.getText());
 		if(response.get("success").toString().equals("true") ) {
 			this.app.setUserId(response.get("userId").toString());
 			this.app.setUserName(response.get("userName").toString());
@@ -43,19 +44,19 @@ public class LoginPageController {
 	private static final String IDLE_BUTTON_STYLE = "-fx-background-color: #577CFF; -fx-background-radius: 5px; -fx-border-color: #577CFF; -fx-border-width: 2px; -fx-border-radius: 5px; -fx-padding: 10px 30px; -fx-text-fill: #FFFFFF;";
 	
 	public void buttonEntered() {
-		this.loginButton.setStyle(HOVERED_BUTTON_STYLE);
+		this.signupButton.setStyle(HOVERED_BUTTON_STYLE);
 	}
 	
 	public void buttonExited() {
-		this.loginButton.setStyle(IDLE_BUTTON_STYLE);
+		this.signupButton.setStyle(IDLE_BUTTON_STYLE);
 	}
 	
-	public void createNewAccountClicked() {
-		this.app.setActiveTab("signup");
+	public void loginClicked() {
+		this.app.setActiveTab("login");
 	}
 	
 	public void updateGui() {
-		this.loginButton.setStyle(IDLE_BUTTON_STYLE);
+		this.signupButton.setStyle(IDLE_BUTTON_STYLE);
 	}
 	
 }

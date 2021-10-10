@@ -7,6 +7,7 @@ import javafx.scene.layout.VBox;
 import main.models.App;
 import main.models.LoginPage;
 import main.models.NavBar;
+import main.models.SignupPage;
 import main.models.TitleBar;
 
 public class AppController{
@@ -30,6 +31,9 @@ public class AppController{
 		this.titleBar.getChildren().add(new TitleBar(app));
 		if(this.app.getActiveTab().equals("login")) {
 			this.mainContainer.getChildren().add(new LoginPage(app));
+		}
+		else if(this.app.getActiveTab().equals("signup")) {
+			this.mainContainer.getChildren().add(new SignupPage(app));
 		}
 	}
 	
