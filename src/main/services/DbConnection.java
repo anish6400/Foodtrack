@@ -93,6 +93,65 @@ public class DbConnection {
 		}  
 	}
 	
+	public Map<Object, Object> getUserBudget(String userId, String month, String year){
+		Map<Object, Object> retMap = new HashMap<Object, Object>();
+		try {
+			PreparedStatement stmt_one = con.prepareStatement("SELECT * FROM budget WHERE userId=? AND month =? AND year =?");
+			stmt_one.setString(1, userId);
+			stmt_one.setString(2, month);
+			stmt_one.setString(3, year);
+			ResultSet rs = stmt_one.executeQuery();
+			if(rs.next()) {
+				retMap.put("success", true);
+				retMap.put("budgetSet", true);
+				retMap.put("budget", rs.getString("budget"));
+				return retMap;
+			}
+			else {
+				retMap.put("success", true);
+				retMap.put("budgetSet", false);
+				retMap.put("budget", null);
+				return retMap;
+			}
+		}
+		catch (SQLException e) {
+			retMap.put("success", false);
+			retMap.put("error", "Unexpected error occured.");
+			return retMap;
+		}  
+	}
+	
+	public void setUserBudget(String userId, String month, String year, String budgetVal){
+		month = month.toLowerCase();
+		budgetVal = String.valueOf(Math.round(Double.parseDouble(budgetVal) * 100.0) / 100.0);
+		try {
+			PreparedStatement stmt_one = con.prepareStatement("SELECT * FROM budget WHERE userId=? AND month =? AND year =?");
+			stmt_one.setString(1, userId);
+			stmt_one.setString(2, month);
+			stmt_one.setString(3, year);
+			ResultSet rs = stmt_one.executeQuery();
+			if(rs.next()) {
+				PreparedStatement stmt_two = con.prepareStatement("UPDATE budget SET budget = ? WHERE userId=? AND month =? AND year =?");
+				stmt_two.setString(1, budgetVal);
+				stmt_two.setString(2, userId);
+				stmt_two.setString(3, month);
+				stmt_two.setString(4, year);
+				stmt_two.executeUpdate();
+			}
+			else {
+				PreparedStatement stmt_two = con.prepareStatement("INSERT INTO budget(userId, month, year, budget) VALUES(?,?,?,?)");
+				stmt_two.setString(1, userId);
+				stmt_two.setString(2, month);
+				stmt_two.setString(3, year);
+				stmt_two.setString(4, budgetVal);
+				stmt_two.executeUpdate();
+			}
+		}
+		catch (SQLException e) {
+			
+		}  
+	}
+	
 	// if authorized returns String array with employee data else returns null
 //	public Employee loginVerification(String employeeId, String pin) {
 //		String query = "SELECT * FROM employee WHERE employeeId=" + employeeId + " and pin="+pin;
